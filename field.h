@@ -22,7 +22,8 @@ public:
     MISSED,
     INJURED,
     KILLED,
-    ALLREADY_SHOOT
+    ALLREADY_SHOOT,
+    OUT_OF_FIELD
   };
 
   struct Pos{

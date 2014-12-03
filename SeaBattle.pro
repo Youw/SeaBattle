@@ -17,7 +17,9 @@ SOURCES += main.cpp\
     gamefields.cpp \
     field.cpp \
     qwidgetwithposclicked.cpp \
-    gamefieldguicontroller.cpp
+    gamefieldguicontroller.cpp \
+    function_pool.cpp \
+    fp_functions.cpp
 
 HEADERS  += mainwindow.h \
     field.h \
@@ -25,7 +27,9 @@ HEADERS  += mainwindow.h \
     Serializer/Serializer.h \
     field.h \
     qwidgetwithposclicked.h \
-    gamefieldguicontroller.h
+    gamefieldguicontroller.h \
+    function_pool.h \
+    fp_functions.h
 
 FORMS    += mainwindow.ui \
     gamefields.ui

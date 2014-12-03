@@ -5,8 +5,7 @@
 #include <QDebug>
 #include <array>
 
-#include <gamefieldviewcontroller.h>
-
+#include "gamefieldguicontroller.h"
 GameFields::GameFields(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::GameFields)

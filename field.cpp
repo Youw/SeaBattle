@@ -68,7 +68,7 @@ Field::ShootResult Field::shoot(const Pos& pos_at)
 Field::ShootResult Field::shoot(unsigned row, unsigned coll)
 {
   if(row>=FieldSize||coll>FieldSize) {
-      return;
+      return ShootResult::OUT_OF_FIELD;
     }
   switch(m_field[row][coll]) {
     case SHOOTED: {
@@ -84,7 +84,7 @@ Field::ShootResult Field::shoot(unsigned row, unsigned coll)
     case SHIP_CATCH:
     case SHIP_DEATH: {
         return ShootResult::ALLREADY_SHOOT;
-        return;
+        //return; //WTF??
       }
     case SHIP_NORMAL:
       setCellState(row,coll,SHIP_CATCH);
