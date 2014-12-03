@@ -1,2 +1,5 @@
-*.pro.user
-*.pro.user.*
+build*/
+*.autosave
+*.user
+*.user.*
+*~
