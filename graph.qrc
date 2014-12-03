@@ -1,0 +1,30 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Graph/Dig/1.png</file>
+        <file>Graph/Dig/2.png</file>
+        <file>Graph/Dig/3.png</file>
+        <file>Graph/Dig/4.png</file>
+        <file>Graph/Dig/5.png</file>
+        <file>Graph/Dig/6.png</file>
+        <file>Graph/Dig/7.png</file>
+        <file>Graph/Dig/8.png</file>
+        <file>Graph/Dig/9.png</file>
+        <file>Graph/Dig/10.png</file>
+        <file>Graph/Ships/Empty.png</file>
+        <file>Graph/Ships/Injured.png</file>
+        <file>Graph/Ships/Killed.png</file>
+        <file>Graph/Ships/Marked.png</file>
+        <file>Graph/Ships/Miss.png</file>
+        <file>Graph/Ships/Normal.png</file>
+        <file>Graph/Sum/1.png</file>
+        <file>Graph/Sum/2.png</file>
+        <file>Graph/Sum/3.png</file>
+        <file>Graph/Sum/4.png</file>
+        <file>Graph/Sum/5.png</file>
+        <file>Graph/Sum/6.png</file>
+        <file>Graph/Sum/7.png</file>
+        <file>Graph/Sum/8.png</file>
+        <file>Graph/Sum/9.png</file>
+        <file>Graph/Sum/10.png</file>
+    </qresource>
+</RCC>
