@@ -10,13 +10,13 @@ namespace Ui {
   class GameField;
 }
 
-class GuiFields : public QWidget
+class FieldGUI : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit GuiFields(QWidget *parent = 0);
-  ~GuiFields();
+  explicit FieldGUI(QWidget *parent = 0);
+  ~FieldGUI();
 
   FieldGUIController *getController();
 

@@ -7,7 +7,7 @@
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
-  GuiFields w;
+  FieldGUI w;
   Field f;
   f.setGUIController(w.getController());
 

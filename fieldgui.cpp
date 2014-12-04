@@ -7,23 +7,23 @@
 
 #include "fieldguicontroller.h"
 
-GuiFields::GuiFields(QWidget *parent) :
+FieldGUI::FieldGUI(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::GameField)
 {
   ui->setupUi(this);
 
-  left_game_field_gui_controller.reset(new FieldGUIController(ui->Field1));
+  left_game_field_gui_controller.reset(new FieldGUIController(ui->gui_field));
 
   left_game_field_gui_controller->prepareField();
 }
 
-GuiFields::~GuiFields()
+FieldGUI::~FieldGUI()
 {
   delete ui;
 }
 
-FieldGUIController* GuiFields::getController()
+FieldGUIController* FieldGUI::getController()
 {
   return &*left_game_field_gui_controller;
 }
