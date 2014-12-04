@@ -1,14 +1,15 @@
-#include "mainwindow.h"
-#include "gamefields.h"
 #include <QApplication>
+
 #include "field.h"
+#include "fieldgui.h"
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
-  GameFields w;
+  GuiFields w;
   Field f;
-  f.setGUIController(w.getLeftField());
+  f.setGUIController(w.getController());
 
   f.setCellState({1,1},Field::SHOOTED);
   f.setCellState({1,2},Field::SHIP_CATCH);

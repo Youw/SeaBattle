@@ -1,4 +1,4 @@
-#include "gamefieldguicontroller.h"
+#include "fieldguicontroller.h"
 
 #include <QString>
 #include <QObject>
@@ -8,11 +8,11 @@
 
 #include "qwidgetwithposclicked.h"
 
-GameFieldGUIController::GameFieldGUIController(QWidget *field_widget): field(field_widget)
+FieldGUIController::FieldGUIController(QWidget *field_widget): field(field_widget)
 {
 }
 
-void GameFieldGUIController::prepareField()
+void FieldGUIController::prepareField()
 {
   clearChildren();
   insertLayout();
@@ -31,14 +31,14 @@ void GameFieldGUIController::prepareField()
     }
 }
 
-void GameFieldGUIController::clearChildren()
+void FieldGUIController::clearChildren()
 {
   while(auto child = field->findChild<QWidget*>()) {
       delete child;
     }
 }
 
-void GameFieldGUIController::insertLayout()
+void FieldGUIController::insertLayout()
 {
   delete field->layout();
   QGridLayout* layout = new QGridLayout(field);
@@ -46,32 +46,32 @@ void GameFieldGUIController::insertLayout()
   field->setLayout(layout);
 }
 
-void GameFieldGUIController::insertCell(unsigned row, unsigned coll, const QString& background_image_path)
+void FieldGUIController::insertCell(unsigned row, unsigned coll, const QString& background_image_path)
 {
   QWidget* cell = new QWidget;
   dynamic_cast<QGridLayout*>(field->layout())->addWidget(cell,row,coll);
   setCellBackgroundImage(cell,background_image_path);
 }
 
-void GameFieldGUIController::setCellBackgroundImage(unsigned row, unsigned coll, const QString& image_path)
+void FieldGUIController::setCellBackgroundImage(unsigned row, unsigned coll, const QString& image_path)
 {
   //game cells numeration from 0 but in greedlayout from 1
   auto cell = getCell(row+1,coll+1);
   setCellBackgroundImage(cell,image_path);
 }
 
-QWidget* GameFieldGUIController::getCell(unsigned row, unsigned coll)
+QWidget* FieldGUIController::getCell(unsigned row, unsigned coll)
 {
   return dynamic_cast<QGridLayout*>(field->layout())->itemAtPosition(row,coll)->widget();
 }
 
-void GameFieldGUIController::setCellBackgroundImage(QWidget *cell, const QString& image_path)
+void FieldGUIController::setCellBackgroundImage(QWidget *cell, const QString& image_path)
 {
   QString style = "border-image: url("+image_path+") 0 0 0 0 stretch stretch;";
   cell->setStyleSheet(style);
 }
 
-void GameFieldGUIController::makeCellHoverSensitiveAndClicable(unsigned row, unsigned coll, const QString &hover_color)
+void FieldGUIController::makeCellHoverSensitiveAndClicable(unsigned row, unsigned coll, const QString &hover_color)
 {
   QWidget *cell = getCell(row,coll);
   QLayout* layout = new QBoxLayout(QBoxLayout::LeftToRight,cell);
@@ -89,12 +89,12 @@ void GameFieldGUIController::makeCellHoverSensitiveAndClicable(unsigned row, uns
   cell->setLayout(layout);
 }
 
-void GameFieldGUIController::setClickCallBack(const CellClickCallBack& call_back)
+void FieldGUIController::setClickCallBack(const CellClickCallBack& call_back)
 {
   click_call_back = call_back;
 }
 
-void GameFieldGUIController::clickCell(unsigned row, unsigned coll, Qt::MouseButton mouse_button)
+void FieldGUIController::clickCell(unsigned row, unsigned coll, Qt::MouseButton mouse_button)
 {
   if (click_call_back) {
       click_call_back(row,coll,mouse_button);

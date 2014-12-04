@@ -10,13 +10,13 @@ class QString;
 
 using CellClickCallBack = std::function<void(unsigned row, unsigned coll, Qt::MouseButton mouse_button)>;
 
-class GameFieldGUIController: public QObject
+class FieldGUIController: public QObject
 {
   Q_OBJECT
   QWidget *field;
 
 public:
-  GameFieldGUIController(QWidget *field);
+  FieldGUIController(QWidget *field);
 
   void setCellBackgroundImage(unsigned row, unsigned coll, const QString& image_path);
 

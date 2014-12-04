@@ -3,7 +3,7 @@
 
 #include<array>
 
-#include "gamefieldguicontroller.h"
+#include "fieldguicontroller.h"
 
 class Field
 {
@@ -39,8 +39,8 @@ public:
   State Check(unsigned row, unsigned coll)const;
   State Check(const Pos& pos_at)const;
 
-  void setGUIController(GameFieldGUIController* gui_controller);
-  GameFieldGUIController* getFieldController();
+  void setGUIController(FieldGUIController* gui_controller);
+  FieldGUIController* getFieldController();
 
   ShootResult shoot(unsigned row, unsigned coll);
   ShootResult shoot(const Pos& pos_at);
@@ -55,7 +55,7 @@ public:
   void markCell(unsigned row, unsigned coll);
 
 private:
-  GameFieldGUIController* gui_controller;
+  FieldGUIController* gui_controller = 0;
 
   std::array<std::array<State, FieldSize>, FieldSize> m_field;
 };
