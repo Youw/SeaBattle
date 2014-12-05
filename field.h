@@ -12,8 +12,9 @@ class FieldRandomizer;
 class Field: public QObject
 {
   Q_OBJECT
-  static const unsigned FieldSize = 10;
 public:
+  static const unsigned FieldSize = 10;
+
   enum State{
     EMPTY = 0,
     SHOOTED,
@@ -58,6 +59,9 @@ public:
   void markCell(unsigned row, unsigned coll) const;
 
   bool allShipsDead();
+  std::vector<Pos> getInjuredCells() const;
+  unsigned getMinUnkilledShip() const;
+  bool shipCanStay(unsigned row, unsigned coll, unsigned ship_size) const;
 
 public slots:
   void clear();

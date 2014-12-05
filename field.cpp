@@ -41,7 +41,7 @@ Field::State Field::Check(const Pos &pos_at) const
 Field::State Field::Check(unsigned row, unsigned coll) const
 {
   if((row >= FieldSize) || (coll >= FieldSize))
-    return SHOOTED;//TODO: solve this branch corectly
+    return SHOOTED;//fine for me
 
   switch(m_field[row][coll])  {
     case SHOOTED:
@@ -194,6 +194,58 @@ bool Field::allShipsDead()
           return state==SHIP_NORMAL;
         });
     });
+}
+
+std::vector<Field::Pos> Field::getInjuredCells() const
+{
+  std::vector<Field::Pos> cells;
+  for(unsigned row=0; row<m_field.size(); row++) {
+      for(unsigned col=0; col<m_field[row].size(); row++) {
+          if(m_field[row][col]==SHIP_CATCH) {
+              cells.push_back({row,col});
+            }
+        }
+    }
+  return cells;
+}
+
+unsigned Field::getMinUnkilledShip() const
+{
+  std::array<unsigned,5> max_ships_amount = {0,4,3,2,1};
+  std::array<unsigned,5> unkilled_ships = {0,0,0,0,0};
+
+  decltype(m_field) field = m_field;
+  std::function<unsigned(unsigned row, unsigned coll)>ship_size = [&] (unsigned row, unsigned coll)->unsigned {
+      if(row>=FieldSize||coll>=FieldSize) {
+          return 0;
+        }
+      if (field[row][coll]==State::SHIP_NORMAL || field[row][coll]==State::SHIP_DEATH || field[row][coll]==State::SHIP_CATCH) {
+          field[row][coll] = EMPTY;
+          return 1+
+              ship_size(row,coll+1)+
+              ship_size(row,coll-1)+
+              ship_size(row+1,coll)+
+              ship_size(row-1,coll);
+        }
+      return 0;
+    };
+  for(unsigned row=0; row<m_field.size(); row++) {
+      for(unsigned col=0; col<m_field[row].size(); row++) {
+          if (field[row][col]==State::SHIP_NORMAL) {
+              unkilled_ships[ship_size(row,col)]++;
+            }
+        }
+    }
+  for(unsigned i = 1; i<=4; i++) {
+      if(unkilled_ships[i]==max_ships_amount[i])
+        return i;
+    }
+  return 1;
+}
+
+bool Field::shipCanStay(unsigned row, unsigned coll, unsigned ship_size) const
+{
+
 }
 
 FieldGUIController* Field::getFieldController() const
