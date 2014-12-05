@@ -9,6 +9,7 @@ namespace Functions{
     std::string m_name;
   public:
     Function(std::string name): m_name(name){}
+    virtual ~Function() {}
     virtual std::string Name() const {return m_name;}
     virtual int operator()(Field* fld, Field::Pos& plc) const = 0;
     virtual bool isLeaf()const {return false;}

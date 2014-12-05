@@ -26,6 +26,11 @@ void Game::setPlayerInfo(PlayerInfo& player_info, Field* field, Player* player)
   player_info.player = player;
 }
 
+void Game::startGame()
+{
+  startGame(true);
+}
+
 void Game::startGame(bool left_player_first)
 {
   if(!left_player_first) {
@@ -47,6 +52,7 @@ void Game::makeNextStep()
       players[current_player].field->getFieldController()->setCellBackgroundImage(-1,-1,":/Graph/White.png");
       current_player=(current_player+1)%2;
       players[current_player].field->getFieldController()->setCellBackgroundImage(-1,-1,":/Graph/Green.png");
+      QApplication::processEvents();
       if(current_player==0) {
           QObject::connect(players[0].player,SIGNAL(nextStepGenerated(uint,uint)),this,SLOT(leftPlayerMadeStep(uint,uint)));
         } else {

@@ -7,6 +7,7 @@
 
 class Game;
 class Player;
+class QTimer;
 
 namespace Ui {
   class MainWindow;
@@ -34,6 +35,8 @@ private:
 
   Field left_field;
   Field right_field;
+
+  QTimer* timer;
 };
 
 #endif // MAINWINDOW_H

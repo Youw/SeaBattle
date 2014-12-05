@@ -21,6 +21,7 @@ signals:
 
 public slots:
   void startGame(bool left_player_first);
+  void startGame();
   void stopGame();
 
 private slots:

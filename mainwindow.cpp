@@ -3,15 +3,19 @@
 
 #include "game.h"
 #include "Player/playerhuman.h"
+#include "Player/playerbotstatic.h"
 
 #include <QCheckBox>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
-  ui(new Ui::MainWindow)
+  ui(new Ui::MainWindow),
+  timer(new QTimer(this))
 {
   ui->setupUi(this);
   ui->btn_stop_game->setVisible(false);
+  timer->setSingleShot(true);
 
   left_field.setGUIController(ui->left_field->getController());
   right_field.setGUIController(ui->right_field->getController());
@@ -51,6 +55,7 @@ void MainWindow::on_btn_start_game_clicked()
         break;
       }
     case FieldGUI::Player::STATIC_BOT: {
+        left_player = new PlayerBotStatic(ui->left_field->getBotDelay());
         break;
       }
     }
@@ -64,6 +69,7 @@ void MainWindow::on_btn_start_game_clicked()
         break;
       }
     case FieldGUI::Player::STATIC_BOT: {
+        right_player = new PlayerBotStatic(ui->right_field->getBotDelay());
         break;
       }
     }
@@ -73,13 +79,16 @@ void MainWindow::on_btn_start_game_clicked()
 
   QObject::connect(game,SIGNAL(gameStoped(bool)),this,SLOT(gameStoped(bool)));
   QObject::connect(ui->btn_stop_game,SIGNAL(clicked()),game,SLOT(stopGame()));
-  game->startGame(true);
 
   ui->left_field->setControlsEnabled(false);
   ui->right_field->setControlsEnabled(false);
 
   ui->btn_start_game->setVisible(false);
   ui->btn_stop_game->setVisible(true);
+
+  QObject::disconnect(timer,SIGNAL(timeout()),0,0);
+  QObject::connect(timer,SIGNAL(timeout()),game,SLOT(startGame()));
+  timer->start();
 }
 
 void MainWindow::gameStoped(bool left_player_last)

@@ -150,7 +150,7 @@ bool Field::shipIsDead(unsigned row, unsigned coll) const
         }
       bool ok = field[row][coll]!=State::SHIP_NORMAL;
       field[row][coll]=EMPTY;
-      return !ok?false:is_dead(row+1,coll)&is_dead(row-1,coll)&is_dead(row,coll+1)&is_dead(row+1,coll-1);
+      return !ok?false:is_dead(row+1,coll)&is_dead(row-1,coll)&is_dead(row,coll+1)&is_dead(row,coll-1);
     };
   return is_dead(row,coll);
 }
@@ -200,7 +200,7 @@ std::vector<Field::Pos> Field::getInjuredCells() const
 {
   std::vector<Field::Pos> cells;
   for(unsigned row=0; row<m_field.size(); row++) {
-      for(unsigned col=0; col<m_field[row].size(); row++) {
+      for(unsigned col=0; col<m_field[row].size(); col++) {
           if(m_field[row][col]==SHIP_CATCH) {
               cells.push_back({row,col});
             }
@@ -211,7 +211,6 @@ std::vector<Field::Pos> Field::getInjuredCells() const
 
 unsigned Field::getMinUnkilledShip() const
 {
-  std::array<unsigned,5> max_ships_amount = {0,4,3,2,1};
   std::array<unsigned,5> unkilled_ships = {0,0,0,0,0};
 
   decltype(m_field) field = m_field;
@@ -230,22 +229,49 @@ unsigned Field::getMinUnkilledShip() const
       return 0;
     };
   for(unsigned row=0; row<m_field.size(); row++) {
-      for(unsigned col=0; col<m_field[row].size(); row++) {
+      for(unsigned col=0; col<m_field[row].size(); col++) {
           if (field[row][col]==State::SHIP_NORMAL) {
               unkilled_ships[ship_size(row,col)]++;
             }
         }
     }
   for(unsigned i = 1; i<=4; i++) {
-      if(unkilled_ships[i]==max_ships_amount[i])
-        return i;
+      if(unkilled_ships[i]!=0) {
+          return i;
+        }
     }
   return 1;
 }
 
-bool Field::shipCanStay(unsigned row, unsigned coll, unsigned ship_size) const
+bool Field::shipCanStay(unsigned row, unsigned col, unsigned ship_size) const
 {
+  auto check_single = [&] (unsigned i,unsigned j) {
+      return ((Check(i,j) != EMPTY)&&(Check(i,j) != SHOOTED));
+    };
 
+  auto hasNoNeighbors = [&] (unsigned i,unsigned j) {
+    if (check_single(i,j)) return false;
+    if (j+1 < FieldSize && check_single(i,j+1)) return false;
+    if (j > 0 && check_single(i,j-1)) return false;
+    if (i+1 < FieldSize && check_single(i+1,j)) return false;
+    if (i+1 < FieldSize && j+1 < FieldSize && check_single(i+1,j+1)) return false;
+    if (i+1 < FieldSize && j > 0 && check_single(i+1,j-1)) return false;
+    if (i > 0 && check_single(i-1,j)) return false;
+    if (i > 0 && j+1 < FieldSize && check_single(i-1,j+1)) return false;
+    if (i > 0 && j > 0 && check_single(i-1,j-1)) return false;
+    return true;
+  };
+
+
+  std::function<bool(unsigned row, unsigned col, unsigned &ship_size, int drow, int dcol)> shipCanStayVec = [&] (unsigned row, unsigned col, unsigned &ship_size, int drow, int dcol)->bool {
+      if(ship_size==0) {
+          return true;
+        }
+      ship_size--;
+      return Check(row,col)==EMPTY && hasNoNeighbors(row,col) && shipCanStayVec(row+drow,col+dcol,ship_size,drow,dcol);
+    };
+  unsigned ship_size_copy = ship_size;
+  return (shipCanStayVec(row,col,ship_size,0,+1)&&shipCanStayVec(row,col,ship_size,0,-1)) || (shipCanStayVec(row,col,ship_size_copy,+1,0)&&shipCanStayVec(row,col,ship_size_copy,-1,0));
 }
 
 FieldGUIController* Field::getFieldController() const

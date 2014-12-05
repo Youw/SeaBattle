@@ -10,6 +10,7 @@ class Player: public QObject
   Q_OBJECT
 public:
   Player();
+  virtual ~Player() {}
 
   virtual void gameStoped(bool was_last) = 0;
 

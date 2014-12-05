@@ -21,9 +21,9 @@ public:
   void Mutate(double probability);
 private:
   Field::Pos m_focus;
-  Tree m_algorithm;
   int m_maxheight;
   int m_maxwidth;
+  Tree m_algorithm;
 };
 
 

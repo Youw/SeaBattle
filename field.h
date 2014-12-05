@@ -61,7 +61,7 @@ public:
   bool allShipsDead();
   std::vector<Pos> getInjuredCells() const;
   unsigned getMinUnkilledShip() const;
-  bool shipCanStay(unsigned row, unsigned coll, unsigned ship_size) const;
+  bool shipCanStay(unsigned row, unsigned col, unsigned ship_size) const;
 
 public slots:
   void clear();
