@@ -38,6 +38,8 @@ public:
 
 public:
   Field();
+  Field(const Field& right);
+  Field& operator=(const Field& right);
 
   State Check(unsigned row, unsigned coll) const;
   State Check(const Pos& pos_at) const;
@@ -48,11 +50,9 @@ public:
   ShootResult shoot(unsigned row, unsigned coll);
   ShootResult shoot(const Pos& pos_at);
 
-//protected:
   void setCellState(unsigned row, unsigned coll, State state);
   void setCellState(const Pos& pos_at, State state);
 
-public:
   bool shipIsDead(unsigned row, unsigned coll) const;
   void markShipAsDead(unsigned row, unsigned coll);
   void markCell(unsigned row, unsigned coll) const;
@@ -62,8 +62,10 @@ public:
 public slots:
   void clear();
   void setShipsRandomly();
+  void setHideNoramlShips(bool hide);
 
 private:
+  bool hide_normal_ships = false;
   mutable FieldGUIController* gui_controller = 0;
 
   mutable std::array<std::array<State, FieldSize>, FieldSize> m_field;
