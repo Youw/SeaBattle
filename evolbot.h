@@ -13,8 +13,8 @@
 class EvolBot
 {
 public:
-  EvolBot(int max_height = 100, int max_width = 20);
-  EvolBot(Tree* al, int max_height = 100, int max_width = 20);
+  EvolBot(int max_height = 100, int max_width = 10);
+  EvolBot(Tree* al, int max_height = 100, int max_width = 10);
   //~EvolBot();
   void Step(Field* f);
   friend std::array<EvolBot,2> Crossover(const EvolBot& father, const EvolBot& mother);

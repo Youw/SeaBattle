@@ -22,7 +22,14 @@ void EvolBot::Step(Field* f)
 
 void EvolBot::Mutate(double probability)
 {
-  //TODO:
+  if (double(rand() % 101)/100 > probability)
+    return;
+
+  std::vector<Tree*> select;
+  m_algorithm.Select_appropriate_by_depth(select, m_maxheight-1, m_maxwidth);
+  Tree* mute_tree = select[rand() % select.size()];
+  mute_tree->Mutate(m_maxheight - mute_tree->Depth(), m_maxwidth);
+
 }
 std::array<EvolBot,2> Crossover(const EvolBot& father, const EvolBot& mother)
 {

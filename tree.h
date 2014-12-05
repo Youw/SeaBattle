@@ -24,6 +24,7 @@ public:
   void Select_appropriate_by_height(std::vector<Tree*>& res, int max_height, int max_width);
   void Select_appropriate_by_depth(std::vector<Tree*>& res, int max_depth, int max_width);
   //Tree& operator=(Tree& n_tree);
+  Tree* Mutate(int max_height, int max_width);
   friend void Swap(Tree& a, Tree& b);
   //debug:
   std::string getConfiguration()const;
