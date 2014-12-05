@@ -16,6 +16,13 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     field.cpp \
     qwidgetwithposclicked.cpp \
+<<<<<<< HEAD
+    gamefieldguicontroller.cpp \
+    function_pool.cpp \
+    fp_functions.cpp \
+    tree.cpp \
+    evolbot.cpp
+=======
     fieldgui.cpp \
     fieldguicontroller.cpp \
     game.cpp \
@@ -23,11 +30,19 @@ SOURCES += main.cpp\
     Player/playerhuman.cpp \
     fieldrandomizer.cpp \
     Player/playerbotstatic.cpp
+>>>>>>> d4356fd700d6309a2364e8e555b38ac06dfd324b
 
 HEADERS  += mainwindow.h \
     Serializer/Serializer.h \
     field.h \
     qwidgetwithposclicked.h \
+<<<<<<< HEAD
+    gamefieldguicontroller.h \
+    function_pool.h \
+    fp_functions.h \
+    tree.h \
+    evolbot.h
+=======
     fieldgui.h \
     fieldguicontroller.h \
     game.h \
@@ -35,6 +50,7 @@ HEADERS  += mainwindow.h \
     Player/playerhuman.h \
     fieldrandomizer.h \
     Player/playerbotstatic.h
+>>>>>>> d4356fd700d6309a2364e8e555b38ac06dfd324b
 
 FORMS    += mainwindow.ui \
     fieldgui.ui
