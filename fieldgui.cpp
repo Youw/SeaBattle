@@ -1,5 +1,5 @@
 #include "fieldgui.h"
-#include "ui_gamefield.h"
+#include "ui_fieldgui.h"
 
 #include <QGridLayout>
 #include <QDebug>
@@ -9,13 +9,12 @@
 
 FieldGUI::FieldGUI(QWidget *parent) :
   QWidget(parent),
-  ui(new Ui::GameField)
+  ui(new Ui::FieldGUI)
 {
   ui->setupUi(this);
 
-  left_game_field_gui_controller.reset(new FieldGUIController(ui->gui_field));
-
-  left_game_field_gui_controller->prepareField();
+  gui_controller.reset(new FieldGUIController(ui->gui_field));
+  gui_controller->prepareField();
 }
 
 FieldGUI::~FieldGUI()
@@ -25,5 +24,34 @@ FieldGUI::~FieldGUI()
 
 FieldGUIController* FieldGUI::getController()
 {
-  return &*left_game_field_gui_controller;
+  return &*gui_controller;
+}
+
+FieldGUI::Player FieldGUI::getChoosenPlayer() const
+{
+  if(ui->radioHuman->isChecked()) {
+      return Player::HUMAN;
+    }
+  if(ui->radioGeneticBot->isChecked()) {
+      return Player::GENETIC_BOT;
+    }
+  if(ui->radioStatcBot->isChecked()) {
+      return Player::STATIC_BOT;
+    }
+  return Player::HUMAN;
+}
+
+unsigned FieldGUI::getBotDelay() const
+{
+  return ui->botDelay->value();
+}
+
+void FieldGUI::on_btnRandomShips_clicked()
+{
+  emit randomizeClicked();
+}
+
+void FieldGUI::on_btnClear_clicked()
+{
+  emit clearClicked();
 }

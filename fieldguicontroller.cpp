@@ -89,7 +89,7 @@ void FieldGUIController::makeCellHoverSensitiveAndClicable(unsigned row, unsigne
   cell->setLayout(layout);
 }
 
-void FieldGUIController::setClickCallBack(const CellClickCallBack& call_back)
+void FieldGUIController::setClickCallBack(const CellClickCallBack& call_back) const
 {
   click_call_back = call_back;
 }

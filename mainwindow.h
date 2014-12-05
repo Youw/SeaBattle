@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "field.h"
+
 namespace Ui {
   class MainWindow;
 }
@@ -17,6 +19,9 @@ public:
 
 private:
   Ui::MainWindow *ui;
+
+  Field left_field;
+  Field right_field;
 };
 
 #endif // MAINWINDOW_H

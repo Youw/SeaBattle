@@ -22,7 +22,7 @@ public:
 
   void prepareField();
 
-  void setClickCallBack(const CellClickCallBack& call_back);
+  void setClickCallBack(const CellClickCallBack& call_back) const;
 
 private:
   void clearChildren();
@@ -32,7 +32,7 @@ private:
   QWidget* getCell(unsigned row, unsigned coll);
   void makeCellHoverSensitiveAndClicable(unsigned row, unsigned coll, const QString &hover_color);
 
-  CellClickCallBack click_call_back;
+  mutable CellClickCallBack click_call_back;
 public slots:
 
   void clickCell(unsigned row, unsigned coll, Qt::MouseButton mouse_button);
