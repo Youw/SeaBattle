@@ -19,7 +19,9 @@ SOURCES += main.cpp\
     qwidgetwithposclicked.cpp \
     gamefieldguicontroller.cpp \
     function_pool.cpp \
-    fp_functions.cpp
+    fp_functions.cpp \
+    tree.cpp \
+    evolbot.cpp
 
 HEADERS  += mainwindow.h \
     field.h \
@@ -29,7 +31,9 @@ HEADERS  += mainwindow.h \
     qwidgetwithposclicked.h \
     gamefieldguicontroller.h \
     function_pool.h \
-    fp_functions.h
+    fp_functions.h \
+    tree.h \
+    evolbot.h
 
 FORMS    += mainwindow.ui \
     gamefields.ui
