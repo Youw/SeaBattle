@@ -1,5 +1,7 @@
 #include "game.h"
 
+#include <QApplication>
+
 #include "field.h"
 #include "fieldguicontroller.h"
 #include "Player/player.h"
@@ -38,17 +40,21 @@ void Game::startGame(bool left_player_first)
 
 void Game::makeNextStep()
 {
-  QObject::disconnect(players[current_player].player,SIGNAL(nextStepGenerated(uint,uint)),this,0);
-  players[current_player].field->getFieldController()->setCellBackgroundImage(-1,-1,":/Graph/White.png");
-  current_player=(current_player+1)%2;
-  players[current_player].field->getFieldController()->setCellBackgroundImage(-1,-1,":/Graph/Green.png");
-  if(current_player==0) {
-      QObject::connect(players[0].player,SIGNAL(nextStepGenerated(uint,uint)),this,SLOT(leftPlayerMadeStep(uint,uint)));
-    } else {
-      QObject::connect(players[1].player,SIGNAL(nextStepGenerated(uint,uint)),this,SLOT(rightPlayerMadeStep(uint,uint)));
+  static bool recurcive = false;
+  recurcive = !recurcive;
+  while(recurcive) {
+      QObject::disconnect(players[current_player].player,SIGNAL(nextStepGenerated(uint,uint)),this,0);
+      players[current_player].field->getFieldController()->setCellBackgroundImage(-1,-1,":/Graph/White.png");
+      current_player=(current_player+1)%2;
+      players[current_player].field->getFieldController()->setCellBackgroundImage(-1,-1,":/Graph/Green.png");
+      if(current_player==0) {
+          QObject::connect(players[0].player,SIGNAL(nextStepGenerated(uint,uint)),this,SLOT(leftPlayerMadeStep(uint,uint)));
+        } else {
+          QObject::connect(players[1].player,SIGNAL(nextStepGenerated(uint,uint)),this,SLOT(rightPlayerMadeStep(uint,uint)));
+        }
+      emit players[current_player].player->requestForNextStep(*players[current_player].field);
+      recurcive = !recurcive;
     }
-
-  emit players[current_player].player->requestForNextStep(*players[current_player].field);
 }
 
 void Game::leftPlayerMadeStep(unsigned row, unsigned col)
@@ -64,6 +70,7 @@ void Game::rightPlayerMadeStep(unsigned row, unsigned col)
 void Game::playerMadeStep(PlayerInfo& player_info, unsigned row, unsigned col)
 {
   auto result = player_info.field->shoot(row,col);
+  QApplication::processEvents();
   switch(result) {
     case Field::ShootResult::KILLED: {
         if(player_info.field->allShipsDead()) {
