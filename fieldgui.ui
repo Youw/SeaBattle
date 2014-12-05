@@ -199,10 +199,35 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btnRandomShips">
-           <property name="text">
-            <string>Виставити випадково</string>
-           </property>
+          <widget class="QWidget" name="widget_3" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="btnRandomShips">
+              <property name="text">
+               <string>Виставити випадково</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="hideRandom">
+              <property name="text">
+               <string>Приховати</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
         </layout>

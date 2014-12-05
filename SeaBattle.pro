@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     game.cpp \
     Player/player.cpp \
     Player/playerhuman.cpp \
-    fieldrandomizer.cpp
+    fieldrandomizer.cpp \
+    Player/playerbotstatic.cpp
 
 HEADERS  += mainwindow.h \
     Serializer/Serializer.h \
@@ -32,7 +33,8 @@ HEADERS  += mainwindow.h \
     game.h \
     Player/player.h \
     Player/playerhuman.h \
-    fieldrandomizer.h
+    fieldrandomizer.h \
+    Player/playerbotstatic.h
 
 FORMS    += mainwindow.ui \
     fieldgui.ui

@@ -5,6 +5,7 @@
 #include <QWidget>
 
 class FieldGUIController;
+class QCheckBox;
 
 namespace Ui {
   class FieldGUI;
@@ -24,6 +25,7 @@ public:
 
   Player getChoosenPlayer() const;
   unsigned getBotDelay() const;
+  QCheckBox* hideShips() const;
 
   void setControlsEnabled(bool enable);
 

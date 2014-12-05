@@ -4,6 +4,8 @@
 #include "game.h"
 #include "Player/playerhuman.h"
 
+#include <QCheckBox>
+
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow)
@@ -17,18 +19,19 @@ MainWindow::MainWindow(QWidget *parent) :
   QObject::connect(ui->left_field,SIGNAL(clearClicked()),&left_field,SLOT(clear()));
   QObject::connect(ui->left_field,SIGNAL(randomizeClicked()),&left_field,SLOT(setShipsRandomly()));
 
-
   QObject::connect(ui->right_field,SIGNAL(clearClicked()),&right_field,SLOT(clear()));
   QObject::connect(ui->right_field,SIGNAL(randomizeClicked()),&right_field,SLOT(setShipsRandomly()));
 
+  QObject::connect(ui->right_field->hideShips(),SIGNAL(clicked(bool)),&right_field,SLOT(setHideNoramlShips(bool)));
+  QObject::connect(ui->left_field->hideShips(),SIGNAL(clicked(bool)),&left_field,SLOT(setHideNoramlShips(bool)));
 }
 
 MainWindow::~MainWindow()
 {
-  delete ui;
-  delete game;
   delete left_player;
   delete right_player;
+  delete game;
+  delete ui;
 }
 
 void MainWindow::on_btn_start_game_clicked()
@@ -64,8 +67,6 @@ void MainWindow::on_btn_start_game_clicked()
         break;
       }
     }
-
-
 
   game->setLeftPlayerInfo(&left_field,left_player);
   game->setRightPlayerInfo(&right_field,right_player);

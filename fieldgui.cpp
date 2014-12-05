@@ -46,6 +46,11 @@ unsigned FieldGUI::getBotDelay() const
   return ui->botDelay->value();
 }
 
+QCheckBox *FieldGUI::hideShips() const
+{
+  return ui->hideRandom;
+}
+
 void FieldGUI::setControlsEnabled(bool enable)
 {
   ui->g_bot_delay->setEnabled(enable);
