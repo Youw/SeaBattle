@@ -10,19 +10,19 @@ class QString;
 
 using CellClickCallBack = std::function<void(unsigned row, unsigned coll, Qt::MouseButton mouse_button)>;
 
-class GameFieldGUIController: public QObject
+class FieldGUIController: public QObject
 {
   Q_OBJECT
   QWidget *field;
 
 public:
-  GameFieldGUIController(QWidget *field);
+  FieldGUIController(QWidget *field);
 
   void setCellBackgroundImage(unsigned row, unsigned coll, const QString& image_path);
 
   void prepareField();
 
-  void setClickCallBack(const CellClickCallBack& call_back);
+  void setClickCallBack(const CellClickCallBack& call_back) const;
 
 private:
   void clearChildren();
@@ -32,7 +32,7 @@ private:
   QWidget* getCell(unsigned row, unsigned coll);
   void makeCellHoverSensitiveAndClicable(unsigned row, unsigned coll, const QString &hover_color);
 
-  CellClickCallBack click_call_back;
+  mutable CellClickCallBack click_call_back;
 public slots:
 
   void clickCell(unsigned row, unsigned coll, Qt::MouseButton mouse_button);

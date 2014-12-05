@@ -4,16 +4,31 @@
 #include <QWidget>
 #include <QGridLayout>
 
+#include "fieldrandomizer.h"
+
 Field::Field()
 {
   clear();
 }
 
+Field::Field(const Field &right):
+  QObject(),
+  m_field(right.m_field)
+{
+
+}
+
+Field& Field::operator=(const Field& right)
+{
+  m_field = right.m_field;
+  return *this;
+}
+
 void Field::clear()
 {
-  for(auto& row: m_field) {
-      for(auto& cell: row) {
-          cell = EMPTY;
+  for(unsigned i=0; i<m_field.size(); i++) {
+      for(unsigned j=0; j<m_field[i].size(); j++) {
+          setCellState(i,j,EMPTY);
         }
     }
 }
@@ -25,13 +40,25 @@ Field::State Field::Check(const Pos &pos_at) const
 
 Field::State Field::Check(unsigned row, unsigned coll) const
 {
-  if((row < FieldSize) && (coll < FieldSize))
-    return m_field[row][coll];
-  else //TODO: solve this branch corectly
-    return EMPTY;
+  if((row >= FieldSize) || (coll >= FieldSize))
+    return SHOOTED;//TODO: solve this branch corectly
+
+  switch(m_field[row][coll])  {
+    case SHOOTED:
+      return SHOOTED;
+    case SHIP_DEATH:
+      return SHIP_DEATH;
+    case SHIP_CATCH:
+      return SHIP_CATCH;
+    case EMPTY:
+    case VOID_MARK:
+    case SHIP_NORMAL:
+      return EMPTY;
+    }
+  return SHOOTED;//shut the compiler
 }
 
-void Field::setGUIController(GameFieldGUIController *v)
+void Field::setGUIController(FieldGUIController *v)
 {
   gui_controller = v;
 }
@@ -56,6 +83,9 @@ void Field::setCellState(unsigned row, unsigned coll, State state)
   };
   m_field[row][coll] = state;
   if(gui_controller) {
+      if(state == SHIP_NORMAL && hide_normal_ships) {
+          return;
+        }
       gui_controller->setCellBackgroundImage(row,coll,":/Graph/Ships/"+ships[state]+".png");
     }
 }
@@ -95,9 +125,10 @@ Field::ShootResult Field::shoot(unsigned row, unsigned coll)
           return ShootResult::INJURED;
         }
     }
+  return Field::ShootResult(100500);//shut the compiler
 }
 
-bool Field::shipIsDead(unsigned row, unsigned coll)
+bool Field::shipIsDead(unsigned row, unsigned coll) const
 {
   if(row>=FieldSize||coll>FieldSize) {
       return false;
@@ -108,7 +139,7 @@ bool Field::shipIsDead(unsigned row, unsigned coll)
       return false;
     }
   decltype(m_field) field = m_field;
-  std::function<bool(int row, int coll)>is_dead = [&] (int row, int coll)->bool {
+  std::function<bool(unsigned row, unsigned coll)>is_dead = [&] (unsigned row, unsigned coll)->bool {
       if(row>=FieldSize||coll>=FieldSize) {
           return true;
         }
@@ -138,17 +169,44 @@ void Field::markShipAsDead(unsigned row, unsigned coll)
     }
 }
 
-void Field::markCell(unsigned row, unsigned coll)
+void Field::markCell(unsigned row, unsigned coll) const
 {
   if(row>=FieldSize||coll>FieldSize) {
       return;
     }
-  if(m_field[row][coll]==EMPTY) {
-      setCellState(row,coll,VOID_MARK);
+  if(hide_normal_ships) {
+      if(!((m_field[row][coll]==EMPTY)||(m_field[row][coll]==SHIP_NORMAL))) {
+          return;
+        } else if(gui_controller) {
+          gui_controller->setCellBackgroundImage(row,coll,":/Graph/Ships/Marked.png");
+          return;
+        }
+    } else if(m_field[row][coll]!=EMPTY) {
+      return;
     }
+  const_cast<Field*>(this)->setCellState(row,coll,VOID_MARK);
 }
 
-GameFieldGUIController* Field::getFieldController()
+bool Field::allShipsDead()
+{
+  return !std::any_of(m_field.begin(), m_field.end(),[] (std::array<State, FieldSize>& row) {
+      return std::any_of(row.begin(), row.end(), [] (State state) {
+          return state==SHIP_NORMAL;
+        });
+    });
+}
+
+FieldGUIController* Field::getFieldController() const
 {
   return gui_controller;
+}
+
+void Field::setShipsRandomly()
+{
+  FieldRandomizer(*this).randomizeShips();
+}
+
+void Field::setHideNoramlShips(bool hide)
+{
+  hide_normal_ships = hide;
 }

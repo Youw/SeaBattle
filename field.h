@@ -3,11 +3,16 @@
 
 #include<array>
 
-#include "gamefieldguicontroller.h"
+#include "fieldguicontroller.h"
 
-class Field
+#include <QObject>
+
+class FieldRandomizer;
+
+class Field: public QObject
 {
-  static const int FieldSize = 10;
+  Q_OBJECT
+  static const unsigned FieldSize = 10;
 public:
   enum State{
     EMPTY = 0,
@@ -33,31 +38,40 @@ public:
 
 public:
   Field();
+  Field(const Field& right);
+  Field& operator=(const Field& right);
 
-  void clear();
+  State Check(unsigned row, unsigned coll) const;
+  State Check(const Pos& pos_at) const;
 
-  State Check(unsigned row, unsigned coll)const;
-  State Check(const Pos& pos_at)const;
-
-  void setGUIController(GameFieldGUIController* gui_controller);
-  GameFieldGUIController* getFieldController();
+  void setGUIController(FieldGUIController* gui_controller);
+  FieldGUIController* getFieldController() const;
 
   ShootResult shoot(unsigned row, unsigned coll);
   ShootResult shoot(const Pos& pos_at);
 
-//protected:
   void setCellState(unsigned row, unsigned coll, State state);
   void setCellState(const Pos& pos_at, State state);
 
-public:
-  bool shipIsDead(unsigned row, unsigned coll);
+  bool shipIsDead(unsigned row, unsigned coll) const;
   void markShipAsDead(unsigned row, unsigned coll);
-  void markCell(unsigned row, unsigned coll);
+  void markCell(unsigned row, unsigned coll) const;
+
+  bool allShipsDead();
+
+public slots:
+  void clear();
+  void setShipsRandomly();
+  void setHideNoramlShips(bool hide);
 
 private:
-  GameFieldGUIController* gui_controller;
+  bool hide_normal_ships = false;
+  mutable FieldGUIController* gui_controller = 0;
 
-  std::array<std::array<State, FieldSize>, FieldSize> m_field;
+  mutable std::array<std::array<State, FieldSize>, FieldSize> m_field;
+
+  friend class FieldRandomizer;
+
 };
 
 #endif // FIELD_H
