@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QGridLayout>
 
+#include "fieldrandomizer.h"
+
 Field::Field()
 {
   clear();
@@ -99,7 +101,7 @@ Field::ShootResult Field::shoot(unsigned row, unsigned coll)
     }
 }
 
-bool Field::shipIsDead(unsigned row, unsigned coll)
+bool Field::shipIsDead(unsigned row, unsigned coll) const
 {
   if(row>=FieldSize||coll>FieldSize) {
       return false;
@@ -110,7 +112,7 @@ bool Field::shipIsDead(unsigned row, unsigned coll)
       return false;
     }
   decltype(m_field) field = m_field;
-  std::function<bool(int row, int coll)>is_dead = [&] (int row, int coll)->bool {
+  std::function<bool(unsigned row, unsigned coll)>is_dead = [&] (unsigned row, unsigned coll)->bool {
       if(row>=FieldSize||coll>=FieldSize) {
           return true;
         }
@@ -140,17 +142,22 @@ void Field::markShipAsDead(unsigned row, unsigned coll)
     }
 }
 
-void Field::markCell(unsigned row, unsigned coll)
+void Field::markCell(unsigned row, unsigned coll) const
 {
   if(row>=FieldSize||coll>FieldSize) {
       return;
     }
   if(m_field[row][coll]==EMPTY) {
-      setCellState(row,coll,VOID_MARK);
+      const_cast<Field*>(this)->setCellState(row,coll,VOID_MARK);
     }
 }
 
-FieldGUIController* Field::getFieldController()
+FieldGUIController* Field::getFieldController() const
 {
   return gui_controller;
+}
+
+void Field::setShipsRandomly()
+{
+  FieldRandomizer(*this).randomizeShips();
 }

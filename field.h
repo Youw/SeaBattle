@@ -5,9 +5,14 @@
 
 #include "fieldguicontroller.h"
 
-class Field
+#include <QObject>
+
+class FieldRandomizer;
+
+class Field: public QObject
 {
-  static const int FieldSize = 10;
+  Q_OBJECT
+  static const unsigned FieldSize = 10;
 public:
   enum State{
     EMPTY = 0,
@@ -34,13 +39,11 @@ public:
 public:
   Field();
 
-  void clear();
-
-  State Check(unsigned row, unsigned coll)const;
-  State Check(const Pos& pos_at)const;
+  State Check(unsigned row, unsigned coll) const;
+  State Check(const Pos& pos_at) const;
 
   void setGUIController(FieldGUIController* gui_controller);
-  FieldGUIController* getFieldController();
+  FieldGUIController* getFieldController() const;
 
   ShootResult shoot(unsigned row, unsigned coll);
   ShootResult shoot(const Pos& pos_at);
@@ -50,14 +53,21 @@ public:
   void setCellState(const Pos& pos_at, State state);
 
 public:
-  bool shipIsDead(unsigned row, unsigned coll);
+  bool shipIsDead(unsigned row, unsigned coll) const;
   void markShipAsDead(unsigned row, unsigned coll);
-  void markCell(unsigned row, unsigned coll);
+  void markCell(unsigned row, unsigned coll) const;
+
+public slots:
+  void clear();
+  void setShipsRandomly();
 
 private:
-  FieldGUIController* gui_controller = 0;
+  mutable FieldGUIController* gui_controller = 0;
 
-  std::array<std::array<State, FieldSize>, FieldSize> m_field;
+  mutable std::array<std::array<State, FieldSize>, FieldSize> m_field;
+
+  friend class FieldRandomizer;
+
 };
 
 #endif // FIELD_H
