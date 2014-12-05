@@ -23,7 +23,7 @@ Tree::Tree(const Tree& src, Tree *parent)
 {
   m_func = src.m_func;
   m_parent = parent;
-  for (int i = 0; i < src.m_children.size(); i++)
+  for (int i = 0; i < int(src.m_children.size()); i++)
     m_children.push_back(new Tree(*(src.m_children[i]), this));
 }
 Tree::Tree()
@@ -32,7 +32,7 @@ Tree::Tree()
 }
 Tree::~Tree()
 {
-  for (int i = 0; i < m_children.size(); i++)
+  for (int i = 0; i < int(m_children.size()); i++)
     delete m_children[i];
  // std::cout << m_func->Name();
 }
@@ -55,7 +55,7 @@ int Tree::Height()const
 
   int child_max_height = 0;
   int temp; //for speed up
-  for (int i = 0; i < m_children.size(); i++)
+  for (int i = 0; i < int(m_children.size()); i++)
   {
     temp = (m_children[i])->Height();
     child_max_height = ((child_max_height < temp) ? temp : child_max_height);
@@ -73,7 +73,7 @@ int Tree::Width()const
 {
   int child_max_width = 0;
   int temp; //for speed up too
-  for (int i = 0; i < m_children.size(); i++)
+  for (int i = 0; i < int(m_children.size()); i++)
   {
     temp = (m_children[i])->Width();
     child_max_width = ((child_max_width < temp) ? temp : child_max_width);
@@ -84,7 +84,7 @@ void Tree::Select_appropriate_by_height(std::vector<Tree*>& result, int max_heig
 {
   if ((this->Height() <= max_height) && (this->Width() <= max_width))
     result.push_back(this);
-  for (int i = 0; i < m_children.size(); i++)
+  for (int i = 0; i < int(m_children.size()); i++)
     (m_children[i])->Select_appropriate_by_height(result, max_height, max_width);
 }
 void Tree::Select_appropriate_by_depth(std::vector<Tree*>& result, int max_depth, int max_width)
@@ -94,8 +94,30 @@ void Tree::Select_appropriate_by_depth(std::vector<Tree*>& result, int max_depth
   else if (this->Width() <= max_width)
     result.push_back(this);
 
-  for (int i = 0; i < m_children.size(); i++)
+  for (int i = 0; i < int(m_children.size()); i++)
     (m_children[i])->Select_appropriate_by_depth(result, max_depth, max_width);
+}
+Tree* Tree::Mutate(int max_height, int max_width)
+{
+  Functions::Function* prev_func = m_func;
+  m_func = FunctionPool::Instance()->getRandFunc();
+  if ((prev_func->OutputsRange() == m_func->OutputsRange()) || ((m_func->OutputsRange() == -1) && m_children.size()))
+    return this;
+  else if ((m_func->OutputsRange() == -1) && !m_children.size())
+  {
+    int size = ((rand() % max_width) + 1);
+    for (int i = 0; i < size; i++)
+      m_children.push_back(new Tree(max_height, max_width, this));
+  }else if(int(m_children.size()) < m_func->OutputsRange())
+    for (int i = (m_func->OutputsRange()-m_children.size()); i; i--)
+      m_children.push_back(new Tree(max_height, max_width, this));
+  else if(int(m_children.size()) > m_func->OutputsRange())
+    for (int i = m_func->OutputsRange() - 1; i < prev_func->OutputsRange(); i++)
+    {
+      delete m_children.back();
+      m_children.erase(m_children.end());
+    }
+  return this;
 }
 void Swap(Tree& a, Tree& b)
 {
@@ -103,9 +125,9 @@ void Swap(Tree& a, Tree& b)
   a.m_children = b.m_children;
   b.m_children = subtrees;
 
-  for (int i = 0; i < a.m_children.size(); i++)
+  for (int i = 0; i < int(a.m_children.size()); i++)
     (a.m_children[i])->m_parent = &a;
-  for (int i = 0; i < b.m_children.size(); i++)
+  for (int i = 0; i < int(b.m_children.size()); i++)
     (b.m_children[i])->m_parent = &b;
 
   Functions::Function* fun = a.m_func;
@@ -124,7 +146,7 @@ std::string Tree::getConfiguration()const
 {
   std::string result;
   result += '(' + m_func->Name() + "|";
-  for (int i = 0; i < m_children.size(); i++)
+  for (int i = 0; i < int(m_children.size()); i++)
     result += (m_children[i])->getConfiguration();
   result += ")";
   return result;
