@@ -152,6 +152,15 @@ void Field::markCell(unsigned row, unsigned coll) const
     }
 }
 
+bool Field::allShipsDead()
+{
+  return !std::any_of(m_field.begin(), m_field.end(),[] (std::array<State, FieldSize>& row) {
+      return std::any_of(row.begin(), row.end(), [] (State state) {
+          return state==SHIP_NORMAL;
+        });
+    });
+}
+
 FieldGUIController* Field::getFieldController() const
 {
   return gui_controller;

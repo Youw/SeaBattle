@@ -16,7 +16,7 @@ void FieldGUIController::prepareField()
 {
   clearChildren();
   insertLayout();
-  insertCell(0,0,":/Graph/Ships/Empty.png");
+  insertCell(0,0,":/Graph/White.png");
   for (int i=1; i<=10; i++) {
       insertCell(i,0,":/Graph/Dig/"+QString::number(i)+".png");
     }

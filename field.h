@@ -57,6 +57,8 @@ public:
   void markShipAsDead(unsigned row, unsigned coll);
   void markCell(unsigned row, unsigned coll) const;
 
+  bool allShipsDead();
+
 public slots:
   void clear();
   void setShipsRandomly();

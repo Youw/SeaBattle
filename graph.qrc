@@ -26,5 +26,7 @@
         <file>Graph/Sum/8.png</file>
         <file>Graph/Sum/9.png</file>
         <file>Graph/Sum/10.png</file>
+        <file>Graph/Green.png</file>
+        <file>Graph/White.png</file>
     </qresource>
 </RCC>

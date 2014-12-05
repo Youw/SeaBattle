@@ -25,6 +25,8 @@ public:
   Player getChoosenPlayer() const;
   unsigned getBotDelay() const;
 
+  void setControlsEnabled(bool enable);
+
 signals:
   void clearClicked();
   void randomizeClicked();

@@ -85,9 +85,16 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="btn_start_game">
             <property name="text">
-             <string>PushButton</string>
+             <string>Start game</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_stop_game">
+            <property name="text">
+             <string>StopGame</string>
             </property>
            </widget>
           </item>

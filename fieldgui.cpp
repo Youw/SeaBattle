@@ -46,6 +46,13 @@ unsigned FieldGUI::getBotDelay() const
   return ui->botDelay->value();
 }
 
+void FieldGUI::setControlsEnabled(bool enable)
+{
+  ui->g_bot_delay->setEnabled(enable);
+  ui->g_player_chooser->setEnabled(enable);
+  ui->g_preparing->setEnabled(enable);
+}
+
 void FieldGUI::on_btnRandomShips_clicked()
 {
   emit randomizeClicked();

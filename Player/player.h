@@ -11,6 +11,8 @@ class Player: public QObject
 public:
   Player();
 
+  virtual void gameStoped(bool was_last) = 0;
+
 public slots:
   void requestForNextStep(const Field& field);
 

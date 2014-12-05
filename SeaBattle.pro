@@ -17,20 +17,29 @@ SOURCES += main.cpp\
     field.cpp \
     qwidgetwithposclicked.cpp \
     fieldgui.cpp \
-    fieldguicontroller.cpp
+    fieldguicontroller.cpp \
+    game.cpp \
+    Player/player.cpp \
+    Player/playerhuman.cpp \
+    fieldrandomizer.cpp
 
 HEADERS  += mainwindow.h \
-    field.h \
     Serializer/Serializer.h \
     field.h \
     qwidgetwithposclicked.h \
     fieldgui.h \
-    fieldguicontroller.h
+    fieldguicontroller.h \
+    game.h \
+    Player/player.h \
+    Player/playerhuman.h \
+    fieldrandomizer.h
 
 FORMS    += mainwindow.ui \
-    gamefield.ui
+    fieldgui.ui
 
 RESOURCES += \
     graph.qrc
 
 CONFIG += c++11
+
+OTHER_FILES +=
